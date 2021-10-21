@@ -1,6 +1,7 @@
 name: tag_generation
 
-on: [pull_request]
+on: 
+  pull_request
 
 jobs:
   test_tmp_tag:
