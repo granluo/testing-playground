@@ -1,15 +1,21 @@
 name: tag_generation
 
-on: [pull_request]
+on: 
+  pull_request
 
 jobs:
   test_tmp_tag:
-  runs-on: 	macos-11
-  env:
-    test_token: ${{ secrets.TEST_TOKEN }}
-  steps:
-    - name: Get PR number
-      run: |
-        pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-        echo $pull_number
+    runs-on: macos-11
+    env:
+      test_token: ${{ secrets.TEST_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get PR number
+        run: |
+          pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          echo $pull_number
+      - name: create a tag
+        run: |
+          git tag test_tag
+          git push origin test_tag
 
