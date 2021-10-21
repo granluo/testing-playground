@@ -19,9 +19,9 @@ jobs:
           # tag, so error is allowed here.
           git push origin --delete "${testing_tag_version}"
           set -e
-          echo "::set-env name=TAG_NAME::${testing_tag_version}"
+          echo "TAG_NAME=${testing_tag_version}" >> $GITHUB_ENV
       - name: Push a tag
         run: |
-          git tag "${TAG_NAME}"
-          git push origin "${TAG_NAME}"
+          git tag "${env.TAG_NAME}"
+          git push origin "${env.TAG_NAME}"
 
