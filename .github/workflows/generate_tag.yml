@@ -10,18 +10,18 @@ jobs:
       test_token: ${{ secrets.TEST_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - name: Get PR number
+      - name: Create a tag name
         run: |
           pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          echo $pull_number
-      - name: create a tag
-        run: |
           testing_tag_version="SpecTestingTag-PR#""${pull_number}"
           set +e
           # If tag_version is new to the remote, remote cannot delete a non-existent
           # tag, so error is allowed here.
           git push origin --delete "${testing_tag_version}"
           set -e
-          git tag "${testing_tag_version}"
-          git push origin "${testing_tag_version}"
+          echo "::set-env name=TAG_NAME::${testing_tag_version}"
+      - name: Push a tag
+        run: |
+          git tag "${TAG_NAME}"
+          git push origin "${TAG_NAME}"
 
