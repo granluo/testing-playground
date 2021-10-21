@@ -16,6 +16,12 @@ jobs:
           echo $pull_number
       - name: create a tag
         run: |
-          git tag test_tag
-          git push origin test_tag
+          testing_tag_version="SpecTestingTag-PR#""${pull_number}"
+          set +e
+          # If tag_version is new to the remote, remote cannot delete a non-existent
+          # tag, so error is allowed here.
+          git push origin --delete "${testing_tag_version}"
+          set -e
+          git tag "${testing_tag_version}"
+          git push origin "${testing_tag_version}"
 
