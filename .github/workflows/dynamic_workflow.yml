@@ -18,7 +18,4 @@ jobs:
       CONFIG: ${{ needs.job1.outputs.matrix.config }}
       MATRIX: ${{ needs.job1.outputs.matrix }}
     steps:
-    - run: |
-      echo $MATRIX
-      echo $PROJECT
-      echo $CONFIG
+    - run: echo $PROJECT
