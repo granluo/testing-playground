@@ -21,4 +21,4 @@ jobs:
       PODSPEC: ${{ matrix.podsepc }}
       MATRIX: ${{ needs.job1.outputs.matrix }}
     steps:
-    - run: echo $PODSPEC
+    - run: echo ${{ needs.job1.outputs.matrix }}
