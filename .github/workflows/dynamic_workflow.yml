@@ -17,7 +17,9 @@ jobs:
     if: ${{ needs.job1.outputs.matrix }}!="{\"include\":[]}"
     runs-on: ubuntu-latest
     steps:
-    - run: echo "matrix is not empty"
+    - run: |
+        echo "matrix is not empty"
+        echo ${{ needs.job1.outputs.matrix }}
   job3:
     needs: job2
     runs-on: ubuntu-latest
