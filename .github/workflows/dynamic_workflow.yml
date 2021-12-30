@@ -4,7 +4,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.podspecs }}
+      podspecs: ${{ steps.set-matrix.outputs.podspecs }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
