@@ -16,6 +16,11 @@ jobs:
     needs: job1
     if: ${{ needs.job1.outputs.matrix }}!="{\"include\":[]}"
     runs-on: ubuntu-latest
+    steps:
+    - run: echo "matrix is not empty"
+  job3:
+    needs: job2
+    runs-on: ubuntu-latest
     strategy:
       matrix: ${{fromJson(needs.job1.outputs.matrix)}}
     env:
