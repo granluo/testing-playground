@@ -17,7 +17,7 @@ jobs:
   job2:
     needs: job1
       # if: ${{ needs.job1.outputs.podspecs != '[]' }}
-    if: ${{ needs.job1.outputs.matrix != env.EMPTY_METRIX }}
+    if: ${{ needs.job1.outputs.matrix != jobs.job2.env.EMPTY_METRIX }}
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{fromJson(needs.job1.outputs.matrix)}}
