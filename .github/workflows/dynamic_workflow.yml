@@ -16,11 +16,13 @@ jobs:
         echo "::set-output name=matrix::{\"include\":$( cat output.json)}"
   job2:
     needs: job1
-    if: ${{ needs.job1.outputs.podspecs != '[]' }}
+      # if: ${{ needs.job1.outputs.podspecs != '[]' }}
+    if: ${{ needs.job1.outputs.matrix != env.EMPTY_METRIX }}
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{fromJson(needs.job1.outputs.matrix)}}
     env:
+      EMPTY_METRIX: "\"include\":[]"
       PODSPEC: ${{ matrix.podsepc }}
       MATRIX: ${{ needs.job1.outputs.matrix }}
     steps:
