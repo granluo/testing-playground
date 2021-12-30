@@ -12,6 +12,9 @@ jobs:
       run: |
         cat output.json
         echo "::set-output name=matrix::{\"include\":$( cat output.json)}"
+
+    - exit: success()
+      if: $( cat output.json) == '[]'
   job2:
     needs: job1
     if: ${{ needs.job1.outputs.matrix != '{include:[]}' }}
