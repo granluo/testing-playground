@@ -4,29 +4,34 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix: ${{ steps.set-matrix.outputs.podspecs }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
     - id: set-matrix
       run: |
         cat output.json
-        echo "::set-output name=matrix::{\"include\":$( cat output.json)}"
+        echo "::set-output name=podspecs::$( cat output.json)"
 
   job2:
     needs: job1
-    if: ${{ needs.job1.outputs.matrix != '{include:[]}' }}
+    if: ${{ needs.job1.outputs.podspecs != '[]' }}
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    env:
+      PODSPECS: ${{ needs.job1.outputs.podspecs }}
     steps:
-    - run: |
+    - id: set-matrix
+      run: |
         echo "matrix is not empty"
-        echo ${{ needs.job1.outputs.matrix }} != '{include:[]}'
-        echo ${{ needs.job1.outputs.matrix != '{include:[]}' }}
+        echo ${{ needs.job1.outputs.podspecs != '[]' }}
+        echo "::set-output name=matrix::{\"include\":$PODSPECS}"
   job3:
     needs: job2
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.job1.outputs.matrix)}}
+      matrix: ${{fromJson(needs.job2.outputs.matrix)}}
     env:
       PODSPEC: ${{ matrix.podsepc }}
       MATRIX: ${{ needs.job1.outputs.matrix }}
