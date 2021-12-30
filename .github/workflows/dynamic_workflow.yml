@@ -21,7 +21,7 @@ jobs:
     - run: |
         echo "matrix is not empty"
         echo ${{ needs.job1.outputs.matrix }}
-        echo ${{ needs.job1.outputs.matrix != '{include:[]}' }}
+        echo ${{ needs.job1.outputs.matrix != "{include:[]}" }}
   job3:
     needs: job2
     runs-on: ubuntu-latest
