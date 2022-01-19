@@ -28,7 +28,7 @@ jobs:
   job3:
     runs-on: ubuntu-latest
     env:
-      PR: "${{ github.event_name == 'pull_request' && github.base_ref || 'main' }}"
+      PR: "${{ github.event_name == 'pull_request' && github.head_ref || 'main' }}"
     steps:
     - run: |
         echo ${PR}
