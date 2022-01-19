@@ -1,0 +1,36 @@
+name: build
+on: pull_request
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      podspecs: ${{ steps.set-matrix.outputs.podspecs }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - id: set-matrix
+      run: |
+        cat output.json
+        echo "::set-output name=podspecs::$( cat output.json)"
+        echo "::set-output name=matrix::{\"include\":$( cat output.json)}"
+  job2:
+    needs: job1
+    if: ${{ needs.job1.outputs.podspecs != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJson(needs.job1.outputs.matrix)}}
+    env:
+      PODSPEC: ${{ matrix.podsepc }}
+      MATRIX: ${{ needs.job1.outputs.matrix }}
+    steps:
+    - run: echo ${{ needs.job1.outputs.matrix }}
+  job3:
+    runs-on: ubuntu-latest
+    env:
+      PR: "${{ github.event_name == 'pull_request' && github.head_ref || 'main' }}"
+    steps:
+    - run: |
+        echo ${PR}
+        echo ${{ github.event_name }}
+
