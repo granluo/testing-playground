@@ -28,8 +28,9 @@ jobs:
   job3:
     runs-on: ubuntu-latest
     env:
-      PR: "${{ github.event_name == 'pull_request' && 'true' || 'false' }}"
+      PR: "${{ github.event_name == 'pull_request' && 'true' || github.ref_name }}"
     steps:
     - run: |
         echo ${PR}
         echo ${{ github.event_name }}
+
