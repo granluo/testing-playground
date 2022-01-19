@@ -1,5 +1,5 @@
 name: build
-on: push
+on: pull_request
 jobs:
   job1:
     runs-on: ubuntu-latest
@@ -28,7 +28,7 @@ jobs:
   job3:
     runs-on: ubuntu-latest
     env:
-      PR: "${{ github.event_name == 'pull_request' && 'true' || github.ref_name }}"
+      PR: "${{ github.event_name == 'pull_request' && github.ref_name || main }}"
     steps:
     - run: |
         echo ${PR}
