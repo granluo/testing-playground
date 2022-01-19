@@ -31,5 +31,5 @@ jobs:
       PR: "${{ github.event_name == 'pull_request' && 'true' || 'false' }}"
     steps:
     - run: |
-      echo ${PR}
-      echo ${{ github.event_name }}
+        echo ${PR}
+        echo ${{ github.event_name }}
